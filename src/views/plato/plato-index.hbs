@@ -1,0 +1,24 @@
+<h3 class="mt-3">Lista de platos</h3>
+<a class="btn btn-primary" href="/create-plato">Añadir</a>
+{{#each platos}}
+    <div class="card my-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <img class="img-thumbnail" src="img/platos/{{this.foto}}" alt="">
+                </div>
+                <div class="col-md-8">
+                    <p><b>Nombre: </b> {{ this.nombre }}</p>
+                    <p><b>Precio: </b> {{ this.precio }} Bs.</p>
+                    <p><b>Descripción: </b> {{ this.descripcion }}</p>
+                </div>
+            </div>
+            <div class="text-end">
+                <a class="btn btn-sm btn-outline-success" href="/edit-plato/{{this.id}}">Editar</a>
+                <a class="btn btn-sm btn-outline-danger"
+                   onclick="return confirm('¿Está seguro que desea eliminar?')"
+                   href="/delete-plato/{{this.id}}">Eliminar</a>
+            </div>
+        </div>
+    </div>
+{{/each}}

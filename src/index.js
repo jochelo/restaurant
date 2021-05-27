@@ -54,7 +54,7 @@ app.use(require('./routes/comentario'));
 app.use(require('./routes/usuario'));
 app.use(require('./routes/auth'));
 app.use(require('./routes/admin'));
-
+app.use(require('./routes/plato'));
 
 /**
  * PUBLIC
@@ -65,7 +65,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 /**
  * EJECUTAR SERVIDOR
  * */
-app.listen(3000, '192.168.1.12',() => {
+app.listen(3000,'192.168.1.12',() => {
    console.log('Servidor Ejecutandose');
 });
 
