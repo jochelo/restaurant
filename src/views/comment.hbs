@@ -1,0 +1,38 @@
+<h3>Comentarios</h3>
+<div class="row">
+    <div class="col-md-6">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Cuenta</th>
+                    <th>Comentario</th>
+                    <th>Fecha</th>
+                </tr>
+                </thead>
+                {{#each comentarios}}
+                    <tr>
+                        <td>{{ this.nombre_usuario }}</td>
+                        <td>{{ this.detalle }}</td>
+                        <td>{{ dateLit this.fecha }}</td>
+                    </tr>
+                {{/each}}
+            </table>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <form action="/store-comentario" method="post">
+            <div class="my-2">
+                <label for="nombre_usuario">Nombre</label>
+                <input type="text" id="nombre_usuario" name="nombre_usuario" class="form-control">
+            </div>
+            <div class="my-2">
+                <label for="detalle">Detalle</label>
+                <textarea class="form-control" name="detalle" id="detalle" cols="30" rows="10"></textarea>
+            </div>
+            <div class="text-end">
+                <button class="btn btn-primary">COMENTA</button>
+            </div>
+        </form>
+    </div>
+</div>
