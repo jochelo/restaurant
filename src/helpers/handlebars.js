@@ -7,4 +7,9 @@ helpers.dateLit = (date) => {
     return moment(date).format('LLLL');
 }
 
+helpers.json = (obj) => {
+    return JSON.stringify(obj);
+}
+
+
 module.exports = helpers;

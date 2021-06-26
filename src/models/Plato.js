@@ -20,7 +20,7 @@ Plato.create = async (data) => {
         }
     } catch (e) {
         console.error(e);
-    }
+        }
 };
 
 Plato.update = async (id, data) => {

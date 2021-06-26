@@ -1,0 +1,156 @@
+<div class="row mt-4">
+    <div class="col-12 text-end">
+        <form action="/store-pedido" method="post">
+            <input type="hidden" name="cliente_id" value="{{ cliente.id }}">
+            <input type="hidden" name="pedidos" id="pedidos" value="" required>
+
+            <button type="submit" class="btn btn-primary" onclick="registrarPedidos()">Enviar Pedido</button>
+        </form>
+    </div>
+    <div class="col-12 text-center">
+        <h3>Crear Pedido</h3>
+    </div>
+    <div class="col-md-6">
+        <h4>Cliente: {{ cliente.nombre }}</h4>
+        <div class="row">
+            {{#each platos}}
+                <div class="col-md-6">
+                    <div class="card my-3">
+                        <img class="card-img-top" src="/img/platos/{{this.foto}}" alt="">
+                        <div class="card-body">
+                            <div class="">
+                                <p><b>Nombre: </b> {{ this.nombre }}</p>
+                                <p><b>Precio: </b> {{ this.precio }} Bs.</p>
+                            </div>
+
+                            <div class="d-grid gap-1">
+                                <a class="btn btn-sm btn-outline-success"
+                                   data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                   data-bs-whatever="{{@key}}">Ofertar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {{/each}}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr>
+                    <th>Nro</th>
+                    <th>Detalle</th>
+                    <th>Precio [u]</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody id="contenido-table">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">nombre del plato</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="cantidad" class="col-form-label">Cantidad:</label>
+                        <input type="number" class="form-control" id="cantidad" name="cantidad">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btn-modal">Registrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const listaPlatos = {{{ json platos }}};
+    let pedidos = [];
+
+    const modal = document.getElementById('exampleModal');
+    modal.addEventListener('show.bs.modal', (event) => {
+        const button = event.relatedTarget;
+        const key = button.getAttribute('data-bs-whatever');
+
+        const title = document.getElementById('exampleModalLabel');
+        title.innerHTML = listaPlatos[key].nombre;
+
+        const buttonModal = document.getElementById('btn-modal');
+        buttonModal.setAttribute('onclick', `addPedido(${key})`);
+
+        const cantidad = document.getElementById('cantidad');
+        cantidad.value = '';
+
+    })
+
+    const addPedido = (key) => {
+        const existe = pedidos.find((pedido) => {
+            return pedido.id === listaPlatos[key].id;
+        });
+        if (existe === undefined) {
+            const cantidad = document.getElementById('cantidad').value;
+            const pedido = {
+                id: listaPlatos[key].id,
+                nombre: listaPlatos[key].nombre,
+                precio: listaPlatos[key].precio,
+                cantidad,
+            };
+            pedido.subtotal = pedido.cantidad * pedido.precio;
+            pedidos.push(pedido);
+        } else {
+            alert(`${listaPlatos[key].nombre} ya a sido agregado`);
+        }
+        render();
+        console.log(pedidos);
+    }
+    const eliminarPedido = (id) => {
+        pedidos = pedidos.filter( (pedido) => {
+            return pedido.id !== id;
+        });
+        render();
+    }
+
+    const render = () => {
+        const bodyTable = document.getElementById('contenido-table');
+        bodyTable.innerHTML = '';
+
+        for (let i = 0; i < pedidos.length; i++) {
+            bodyTable.innerHTML += `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${pedidos[i].nombre}</td>
+                    <td>${pedidos[i].precio}</td>
+                    <td>${pedidos[i].cantidad}</td>
+                    <td>${pedidos[i].subtotal}</td>
+                    <td>
+                        <a class="btn btn-sm btn-danger" onclick="eliminarPedido(${pedidos[i].id})">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            `;
+        }
+    }
+    const registrarPedidos = () => {
+        if (pedidos.length > 0) {
+            const inputPedidos = document.getElementById('pedidos');
+            inputPedidos.value = JSON.stringify(pedidos);
+        } else {
+            alert('Por favor seleccione algun plato');
+        }
+    }
+</script>
