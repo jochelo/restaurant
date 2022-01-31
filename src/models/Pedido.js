@@ -2,15 +2,24 @@ const db = require('../db');
 const Pedido = {};
 
 Pedido.get = async () => {
-    return await db.query(`select * from pedidos`);
+    return await db.query(`select p.id, c.NIT as 'nit', c.nombre as 'cliente', fecha_pedido, total from pedidos p, clientes c where p.cliente_id=c.id`);
 };
 
 Pedido.getClientes = async (nit) => {
     return await db.query(`select * from clientes where NIT like '%${nit}%'`);
 };
 
+Pedido.getPedidoPlatos = async (id) => {
+    return await db.query(`select pp.id, nombre, precio, cantidad, sub_total, pedido_id from pedido_platos pp, platos p where pedido_id=? and pp.plato_id=p.id`,[id]);
+};
+
+
 Pedido.findCliente = async (id) => {
     return await db.query(`select * from clientes where id=?`, [id]);
+};
+
+Pedido.find = async (id) => {
+    return await db.query(`select * from pedidos where id=?`, [id]);
 };
 
 Pedido.findLastId = async () => {

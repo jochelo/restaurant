@@ -17,6 +17,8 @@ routes.post('/store-cliente', logged, PedidoController.storeCliente);
 routes.get('/get-platos-cliente/:id', logged, PedidoController.getPlatosCliente);
 routes.post('/store-pedido', logged, PedidoController.store);
 
+routes.get('/get-factura-pedido/:id', logged, PedidoController.getFacturaPedido);
+
 
 
 

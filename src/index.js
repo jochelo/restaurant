@@ -7,6 +7,8 @@ const session = require('express-session');
 const MySQLSession = require('express-mysql-session');
 const {database} = require('./keys');
 const passport = require('passport');
+const flash = require('connect-flash');
+const toastr = require('express-toastr');
 
 const app = express();
 require('./helpers/passport');
@@ -22,6 +24,9 @@ app.use(session({
    saveUninitialized: false,
    store: new MySQLSession(database)
 }));
+
+app.use(flash());
+app.use(toastr());
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -42,6 +47,7 @@ app.set('view engine', '.hbs');
  * */
 app.use((req, res, next) => {
    res.locals.usuario = req.user;
+   res.locals.toastr = req.toastr.render()
    next();
 })
 

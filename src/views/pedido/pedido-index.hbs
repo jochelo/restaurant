@@ -13,12 +13,16 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <p><b>Fecha: </b> {{ this.fecha_pedido }}</p>
-                    <p><b>total: </b> {{ this.total }} </p>
+                    <p><b>NIT: </b> {{ this.nit }} </p>
+                    <p><b>Cliente: </b> {{ this.cliente }} </p>
+                    <p><b>Fecha: </b> {{ dateLit this.fecha_pedido }}</p>
+                    <p><b>Total: </b> {{ this.total}} Bs.</p>
                 </div>
             </div>
             <div class="text-end">
-                <a class="btn btn-sm btn-outline-success" href="/get-platos-cliente/{{this.id}}">Factura</a>
+                <a class="btn btn-sm btn-outline-danger border-0" href="/get-factura-pedido/{{this.id}}">
+                    <i class="fa fa-file-pdf"></i>
+                </a>
             </div>
         </div>
     </div>

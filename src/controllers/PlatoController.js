@@ -20,8 +20,10 @@ PlatoController.store = async (req, res) => {
     };
     try {
         await Plato.create(data);
+        req.toastr.success('El plato a sido registrado exitosamente');
         res.redirect('/get-platos');
     } catch (e) {
+        req.toastr.error('A ocurrido un error al registrar el plato', '¡ERROR!');
         console.error(e);
     }
 }
@@ -58,6 +60,7 @@ PlatoController.update = async (req, res) => {
 
 PlatoController.delete = async (req, res) => {
     const plato = await Plato.delete(req.params.id);
+    req.toastr.success('El plato a sido eliminado exitosamente', 'Plato eliminado');
     res.redirect('/get-platos');
 }
 
